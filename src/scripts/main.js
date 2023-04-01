@@ -5,7 +5,6 @@ function main() {
     const xhr = new XMLHttpRequest()
 
     // callback when success or error
-
     xhr.onload = function () {
       const response = JSON.parse(this.responseText)
 
@@ -20,6 +19,7 @@ function main() {
       showResponseMessage()
     }
 
+    // Set method and route
     xhr.open('GET', `${BASE_URL}/list`)
     xhr.send()
   }
@@ -27,6 +27,7 @@ function main() {
   const insertBook = (book) => {
     const xhr = new XMLHttpRequest()
 
+    // callback when success or error
     xhr.onload = function () {
       const response = JSON.parse(this.responseText)
       showResponseMessage(response.message)
@@ -37,8 +38,10 @@ function main() {
       showResponseMessage()
     }
 
+    // Set method and route
     xhr.open('POST', `${BASE_URL}/add`)
 
+    // Set header
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('X-Auth-Token', '12345')
 
@@ -48,6 +51,7 @@ function main() {
   const updateBook = (book) => {
     const xhr = new XMLHttpRequest()
 
+    // callback when success or error
     xhr.onload = function () {
       const response = JSON.parse(this.responseText)
       showResponseMessage(response.message)
@@ -58,8 +62,10 @@ function main() {
       showResponseMessage()
     }
 
+    // Set method and route
     xhr.open('PUT', `${BASE_URL}/edit/${book.id}`)
 
+    // Set header
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('X-Auth-Token', '12345')
 
@@ -67,7 +73,26 @@ function main() {
   }
 
   const removeBook = (bookId) => {
-    // tuliskan kode di sini!
+    const xhr = new XMLHttpRequest()
+
+    // callback when success or error
+    xhr.onload = function () {
+      const response = JSON.parse(this.responseText)
+      showResponseMessage(response.message)
+      getBook()
+    }
+
+    xhr.onerror = function () {
+      showResponseMessage()
+    }
+
+    // Set method and route
+    xhr.open('DELETE', `${BASE_URL}/delete/${bookId}`)
+
+    // Set header
+    xhr.setRequestHeader('X-Auth-Token', '12345')
+
+    xhr.send(bookId)
   }
 
   /*
