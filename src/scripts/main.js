@@ -30,28 +30,23 @@ function main() {
     }
   }
 
-  const updateBook = (book) => {
-    const xhr = new XMLHttpRequest()
+  const updateBook = async (book) => {
+    try {
+      const responseRaw = await fetch(`${BASE_URL}/edit/${book.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Auth-Token': '12345',
+        },
+        body: JSON.stringify(book),
+      })
 
-    // callback when success or error
-    xhr.onload = function () {
-      const response = JSON.parse(this.responseText)
-      showResponseMessage(response.message)
+      const responseJson = await responseRaw.json()
+      showResponseMessage(responseJson.message)
       getBook()
-    }
-
-    xhr.onerror = function () {
+    } catch (error) {
       showResponseMessage()
     }
-
-    // Set method and route
-    xhr.open('PUT', `${BASE_URL}/edit/${book.id}`)
-
-    // Set header
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('X-Auth-Token', '12345')
-
-    xhr.send(JSON.stringify(book))
   }
 
   const removeBook = (bookId) => {
