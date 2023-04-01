@@ -49,27 +49,21 @@ function main() {
     }
   }
 
-  const removeBook = (bookId) => {
-    const xhr = new XMLHttpRequest()
+  const removeBook = async (bookId) => {
+    try {
+      const responseRaw = await fetch(`${BASE_URL}/delete/${bookId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Auth-Token': '12345',
+        },
+      })
 
-    // callback when success or error
-    xhr.onload = function () {
-      const response = JSON.parse(this.responseText)
-      showResponseMessage(response.message)
+      const responseJson = await responseRaw.json()
+      showResponseMessage(responseJson.message)
       getBook()
-    }
-
-    xhr.onerror = function () {
+    } catch (error) {
       showResponseMessage()
     }
-
-    // Set method and route
-    xhr.open('DELETE', `${BASE_URL}/delete/${bookId}`)
-
-    // Set header
-    xhr.setRequestHeader('X-Auth-Token', '12345')
-
-    xhr.send(bookId)
   }
 
   /*
