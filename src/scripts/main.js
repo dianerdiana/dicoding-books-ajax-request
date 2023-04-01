@@ -5,7 +5,12 @@ function main() {
     try {
       const response = await fetch(`${BASE_URL}/list`)
       const responseJson = await response.json()
-      renderAllBooks(responseJson.books)
+
+      if (responseJson.error) {
+        showResponseMessage(responseJson.message)
+      } else {
+        renderAllBooks(responseJson.books)
+      }
     } catch (error) {
       showResponseMessage()
     }
