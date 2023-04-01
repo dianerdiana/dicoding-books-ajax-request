@@ -1,51 +1,33 @@
 function main() {
   const BASE_URL = 'https://books-api.dicoding.dev'
 
-  const getBook = () => {
-    const xhr = new XMLHttpRequest()
-
-    // callback when success or error
-    xhr.onload = function () {
-      const response = JSON.parse(this.responseText)
-
-      if (response.error) {
-        showResponseMessage(response.message)
-      } else {
-        renderAllBooks(response.books)
-      }
-    }
-
-    xhr.onerror = function () {
+  const getBook = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/list`)
+      const responseJson = await response.json()
+      renderAllBooks(responseJson.books)
+    } catch (error) {
       showResponseMessage()
     }
-
-    // Set method and route
-    xhr.open('GET', `${BASE_URL}/list`)
-    xhr.send()
   }
 
-  const insertBook = (book) => {
-    const xhr = new XMLHttpRequest()
+  const insertBook = async (book) => {
+    try {
+      const responseRaw = await fetch(`${BASE_URL}/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Auth-Token': '12345',
+        },
+        body: JSON.stringify(book),
+      })
 
-    // callback when success or error
-    xhr.onload = function () {
-      const response = JSON.parse(this.responseText)
-      showResponseMessage(response.message)
+      const responseJson = await responseRaw.json()
+      showResponseMessage(responseJson.message)
       getBook()
-    }
-
-    xhr.onerror = function () {
+    } catch (error) {
       showResponseMessage()
     }
-
-    // Set method and route
-    xhr.open('POST', `${BASE_URL}/add`)
-
-    // Set header
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('X-Auth-Token', '12345')
-
-    xhr.send(JSON.stringify(book))
   }
 
   const updateBook = (book) => {
