@@ -18,15 +18,16 @@ function main() {
 
   const insertBook = async (book) => {
     try {
-      const responseRaw = await fetch(`${BASE_URL}/add`, {
+      const options = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-Auth-Token': '12345',
         },
         body: JSON.stringify(book),
-      })
+      }
 
+      const responseRaw = await fetch(`${BASE_URL}/add`, options)
       const responseJson = await responseRaw.json()
       showResponseMessage(responseJson.message)
       getBook()
@@ -37,15 +38,16 @@ function main() {
 
   const updateBook = async (book) => {
     try {
-      const responseRaw = await fetch(`${BASE_URL}/edit/${book.id}`, {
+      const options = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'X-Auth-Token': '12345',
         },
         body: JSON.stringify(book),
-      })
+      }
 
+      const responseRaw = await fetch(`${BASE_URL}/edit/${book.id}`, options)
       const responseJson = await responseRaw.json()
       showResponseMessage(responseJson.message)
       getBook()
@@ -56,13 +58,14 @@ function main() {
 
   const removeBook = async (bookId) => {
     try {
-      const responseRaw = await fetch(`${BASE_URL}/delete/${bookId}`, {
+      const options = {
         method: 'DELETE',
         headers: {
           'X-Auth-Token': '12345',
         },
-      })
+      }
 
+      const responseRaw = await fetch(`${BASE_URL}/delete/${bookId}`, options)
       const responseJson = await responseRaw.json()
       showResponseMessage(responseJson.message)
       getBook()
