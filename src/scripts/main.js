@@ -47,6 +47,23 @@ function main() {
 
   const updateBook = (book) => {
     const xhr = new XMLHttpRequest()
+
+    xhr.onload = function () {
+      const response = JSON.parse(this.responseText)
+      showResponseMessage(response.message)
+      getBook()
+    }
+
+    xhr.onerror = function () {
+      showResponseMessage()
+    }
+
+    xhr.open('PUT', `${BASE_URL}/edit/${book.id}`)
+
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('X-Auth-Token', '12345')
+
+    xhr.send(JSON.stringify(book))
   }
 
   const removeBook = (bookId) => {
